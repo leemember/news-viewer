@@ -36,3 +36,133 @@ console.log('대기중 ...');
 ```
 
 printMe가 3초 뒤에 호출되도록 setTimeout 함수의 인자로 전달해 주었는데, 이런 함수를 <콜백함수> 라고 부른다.
+
+## 콜백함수
+
+```
+function increase(number, callback) {
+  setTimeout(()=> {
+    const result = number + 10;
+    if (callback) {
+      callback(result);
+    }
+  }, 1000)
+}
+
+console.log('작업시작');
+increase(0, result => {
+  console.log(result);
+  increase(result, result => {
+    console.log(result);
+    increase(result, result => {
+      console.log(result);
+    }
+  }
+})
+```
+
+이렇게 하면 1초에 걸쳐서 10, 20, 30, 40 과 같은 형태로 여러 번 순차적으로 덧셈 처리하고 싶다면 콜백함수를 통해 중첩하여 구현할 수 있습니다.
+하지만 그렇게 중첩해서 코드를 짜다보면 코드의 가독성도 나빠지고 이러한 형태를 '콜백지옥' 이라고 부른다.
+
+이를 해결해줄 것이 콜백지옥 같은 코드가 형성되지 않게 하는 방안으로
+
+## Promise 를 사용한다.
+
+- ES6에 도입된 기능임
+
+위에 콜백지옥 코드를 Promise를 사용하여 구현해보면 이렇게 된다.
+
+```
+function increase(number) {
+  const promise = new Promise((resolve, reject) => {
+    // resolve는 성공, reject는 실패
+
+    setTimeout(()=> {
+      const result = number + 10;
+      if(result > 50) {
+        // 50보다 높으면 에러 발생 시키기
+        const e = new Error('NumberTooBig');
+        return reject(e);
+      }
+      resolve(result);
+      // number 값에 +10 후 성공 처리
+    }, 1000);
+  });
+  return promise;
+}
+
+increase(0)
+  .then(number => {
+    // Promise에서 resolve된 값은 .then을 통해 받아올수있다.
+
+    console.log(number);
+    return increase(number);
+  })
+
+  // 이렇게 또 .then으로 처리가 가능하다.
+    .then(number => {
+      console.log(number);
+      return increase(number);
+    })
+    .then(number => {
+      console.log(number);
+      return increase(number);
+    })
+    .then(number => {
+      console.log(number);
+      return increase(number);
+    })
+    .then(number => {
+      console.log(number);
+      return increase(number);
+    })
+    .catch(e => {
+      //도중에 에러가 발생한다면 .catch를 통해 알 수 있음
+      console.log(e);
+    })
+```
+
+여러 작업을 연달아 처리한다고 해서 함수를 여러 번 감싸는 것이 아니라 .then을 사용하여 그다음 작업을 설정하기 때문에 콜백 지옥이 형성되지 않습니다.
+
+## async/await
+
+async/await는 Promise를 더욱 쉽게 사용할 수 있도록 해 주는 ES8 문법이다. 이 문법을 사용하려면 함수의 앞부분에 async 키워드를 추가하고, 해당 함수 내부에서 Promise의 앞부분에 await 키워드를 사용한다.
+
+이렇게 하면 Promise가 끝날 때까지 기다리고, 결과 값을 특정 변수에 담을 수 있다.
+
+```
+function increase(number) {
+  const promise = new Promise((resolve, reject) => {
+    // resolve는 성공, reject는 실패
+
+    setTimeout(()=> {
+      const result = number + 10;
+      if(result > 50) {
+        // 50보다 높으면 에러 발생 시키기
+        const e = new Error('NumberTooBig');
+        return reject(e);
+      }
+      resolve(result);
+      // number 값에 +10 후 성공 처리
+    }, 1000);
+  });
+  return promise;
+}
+
+async function runTasks() {
+  try{
+    let result = await increase(result);
+    console.log(result);
+    let result = await increase(result);
+    console.log(result);
+    let result = await increase(result);
+    console.log(result);
+    let result = await increase(result);
+    console.log(result);
+    let result = await increase(result);
+    console.log(result);
+  } catch (e) {
+    console.log(e);
+  }
+}
+```
