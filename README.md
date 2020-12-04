@@ -175,3 +175,9 @@ async function runTasks() {
 ```
 $ npm install axios
 ```
+
+## 뉴스 뷰어 UI 구성
+
+[components] - NewsItem.js / NewsList.js 파일 생성
+NewsItem.js : 각 뉴스정보 보여주는 컴포넌트
+NewsList.js : API 요청하고 뉴스 데이터가 들어있는 배열을 컴포넌트 배열로 변환하여 렌더링해주는 컴포넌트
