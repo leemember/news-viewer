@@ -166,3 +166,12 @@ async function runTasks() {
   }
 }
 ```
+
+## axios 로 API 호출해서 데이터 받아오기
+
+- axios는 현재 가장 많이 사용되고 있는 자바스크립트 HTTP 클라이언트입니다.
+  이 라이브러리 특징은 HTTP 요청을 promise 기반으로 처리한다는 점입니다.
+
+```
+$ npm install axios
+```
