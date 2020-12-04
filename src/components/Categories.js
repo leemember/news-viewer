@@ -1,5 +1,46 @@
 import React from 'react';
-import './Categories.scss';
+import styled, {css} from 'styled-components';
+
+const CategoriesBlock = styled.div`
+    display: flex;
+    padding: 1rem;
+    width: 768px;
+    margin: 0 auto;
+    @media screen and (max-width: 768px) {
+      width: 100%;
+      overflow-x: auto;
+    }
+`;
+
+const Category = styled.div`
+    font-size: 1.125rem;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    padding-bottom: 0.25rem;
+
+    &:hover {
+      color: #495057;
+    }
+
+    ${props => 
+      props.active && css`
+        font-weight:600;
+        border-bottom: 2px solid #22b8cf;
+        color: #22b8cf;
+        &:hover {
+          color: #3bc9db;
+        }
+      `  
+    }
+
+    & + & {
+      margin-left: 1rem;    
+    }
+`;
+
+
+
 
 const categories = [
   {
@@ -28,16 +69,26 @@ const categories = [
   },
 ];
 
-const Categories = () => {
+
+//카테고리에 props추가
+// 카테고리 클릭하면 바로 props로 스타일줌
+
+const Categories = ({onSelect, category}) => {
   return(
-    <div className="CategoriesBlock">
+    <CategoriesBlock>
       {categories.map(c => (
-        <div className="Category" key={c.name}>
+        <Category 
+          key={c.name}
+          active={category === c.name}
+          onClick={() => onSelect(c.name)}
+        >
           {c.text}
-        </div>
+        </Category>
       ))}
-    </div>
+    </CategoriesBlock>
   )
 }
+
+// map함수로 배열변환하기.
 
 export default Categories;
