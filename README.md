@@ -4,6 +4,8 @@
 
 ### https://newsapi.org 에서 제공하는 API 데이터 받기
 
+### https://newsapi.org/s/south-korea-news-api -> 한국뉴스 가져오는 API
+
 ## 작업순서
 
 1. 비동기 작업의 이해
@@ -181,3 +183,32 @@ $ npm install axios
 [components] - NewsItem.js / NewsList.js 파일 생성
 NewsItem.js : 각 뉴스정보 보여주는 컴포넌트
 NewsList.js : API 요청하고 뉴스 데이터가 들어있는 배열을 컴포넌트 배열로 변환하여 렌더링해주는 컴포넌트
+
+## 데이터 연동하기
+
+uesEffect를 사용하여 컴포넌트가 처음 렌더링되는 시점에 API를 요청한다.
+이 때 주의할 점은 ! useEffect에 등록하는 함수에 async를 붙이면 안된다.
+
+useEffect에서 반환해야 하는 값은 뒷정리 함수이기 때문이다.
+따라서 useEffect 내부에 async/await를 사용하고 싶다면, 함수 내부에 async키워드가 붙은 또 다른 함수를 만들어서 사용해 줘야한다.
+
+- 추가
+
+<br>
+
+loading이라는 상태도 관리하여 API 요청이 대기중인지 판별해야됨.
+요청이 대기중일 때는 loading값이 true이고 요청이 끝나면 false가 되어야한다.
+
+NewsList.js에서 map 함수를 사용하기 전에 꼭,
+
+```
+ if (!articles) {
+    return null;
+  }
+```
+
+이 과정을 해주어야한다. !articles를 조회하여 해당 값이 현재 null이 아닌지 검사해야한다. 이 작업을 하지 않으면 아직 데이터가 없을 때 null에는 map함수가 없기 때문에 렌더링 과정에서 오류가 발생합니다.
+
+그래서 애플리케이션이 제대로 나타나지 않고 흰 페이지만 보이게 됩니다.
+
+## 카테고리 구현하기
