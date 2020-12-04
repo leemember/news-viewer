@@ -212,3 +212,29 @@ NewsList.js에서 map 함수를 사용하기 전에 꼭,
 그래서 애플리케이션이 제대로 나타나지 않고 흰 페이지만 보이게 됩니다.
 
 ## 카테고리 구현하기
+
+```
+try {
+        const query = category === 'all' ? '' : `&category=${category}`;
+        const response = await axios.get(
+          `http://newsapi.org/v2/top-headlines?country=kr${query}&apiKey=0a8c4202385d4ec1bb93b7e277b3c51f`,
+        );
+        setArticles(response.data.articles);
+      } catch(e) {
+        console.log(e);
+      }
+      setLoading(false);
+    };
+```
+
+category값이 all이라면 query 값을 공백으로 설정하고, all이 아니라면 `&category=${category}`형태의 문자열로 만듦. 이 query를 요청할 때 주소에 포함된다. (삼항연산자임)
+
+```
+(...)
+  fetchData();
+  }, [category]);
+```
+
+category값이 바뀔 때마다 뉴스를 새로 불러와야 하기 때문에 useEffect의 의존배열에 category를 넣음.
+
+useEffect 한 번으로 컴포넌트가 맨 처음 렌더링될 떄, category값이 바뀔 때 요청하도록 설정하였다.

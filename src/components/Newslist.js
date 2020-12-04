@@ -3,7 +3,7 @@ import NewsItem from './NewsItem';
 import './NewsList.scss';
 import axios from 'axios';
 
-const NewsList = () => {
+const NewsList = ({ category }) => {
   const [articles, setArticles] = useState(null);
   const [loading, setLoading] = useState(false);
   // 요청 대기중일때 loading값이 true, 요청 끝나면 false
@@ -15,8 +15,9 @@ const NewsList = () => {
       //로딩이 끝나면
       //try 예외처리 작업이 된다.
       try {
+        const query = category === 'all' ? '' : `&category=${category}`;        
         const response = await axios.get(
-          'http://newsapi.org/v2/top-headlines?country=kr&category=entertainment&apiKey=8145004de3fe4d2dae052911c23fe83b',
+          `http://newsapi.org/v2/top-headlines?country=kr${query}&apiKey=0a8c4202385d4ec1bb93b7e277b3c51f`,
         );
         setArticles(response.data.articles);
       } catch(e) {
@@ -25,7 +26,7 @@ const NewsList = () => {
       setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [category]);
 
   // 대기중일때
   if (loading) {
@@ -46,6 +47,7 @@ const NewsList = () => {
     </div>
   )
   //뉴스 데이터 배열은 map 함수를 사용하여 컴포넌트 배열로 변환한다.
+  
 }
 
 export default NewsList;
