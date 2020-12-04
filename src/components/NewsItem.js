@@ -1,5 +1,5 @@
 import React from 'react';
-import './Newslist.scss';
+import './NewsItem.scss';
 
 const NewsItem = ({article}) => {
   const { title, description, url, urlToImage } = article;
