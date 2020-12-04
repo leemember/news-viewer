@@ -18,4 +18,4 @@ const NewsPage = ({match}) => {
 export default NewsPage;
 
 
-// 현재 선택된 category 값을 URL 파라미터를 통해 사용할 것이다. 그래서 Categories 컴포넌트에서 현재 선택된 카테고리 값을 알려줄 필요도 없고, onSelect 함수를 따로 전달해줄 필요가 없다.lg-col-2
+// 현재 선택된 category 값을 URL 파라미터를 통해 사용할 것이다. 그래서 Categories 컴포넌트에서 현재 선택된 카테고리 값을 알려줄 필요도 없고, onSelect 함수를 따로 전달해줄 필요가 없다.
